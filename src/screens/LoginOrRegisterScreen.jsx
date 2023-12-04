@@ -1,14 +1,25 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginOrRegisterScreen = () => {
+  const navigation = useNavigation();
+
+  const navigateToLogin = () => {
+    navigation.navigate('Login');
+  };
+
+  const navigateToRegister = () => {
+    navigation.navigate('Register');
+  };
+
   return (
     <View style={styles.slide}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={navigateToRegister}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={navigateToLogin}>
           <Text style={styles.buttonText}>Logar</Text>
         </TouchableOpacity>
       </View>
