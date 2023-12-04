@@ -4,7 +4,7 @@ import Swiper from 'react-native-swiper/src';
 import WelcomeScreen from './WelcomeScreen';
 import LoginOrRegisterScreen from './LoginOrRegisterScreen';
 
-export default function Screen() {
+export default function StartScreen() {
   return (
     <Swiper style={styles.wrapper} showsButtons={false} loop={false}>
       <WelcomeScreen />

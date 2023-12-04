@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "@use-expo/font";
 import AppLoading from "expo-app-loading";
 import StartScreen from './src/screens/StartScreen';
+import Navigation from './src/navigation';
 
 export default function App() {
 
@@ -37,7 +38,7 @@ export default function App() {
   // }), []);
 
   return (
-    <StartScreen />
+    <Navigation />
   );
 }
 
