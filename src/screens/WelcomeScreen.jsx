@@ -1,17 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { ThinText } from "../components/Text";
+import { StyleSheet, Text, View, Image } from "react-native";
+import { BoldText, LightText, RegularText, ThinText } from "../components/Text";
 
 const WelcomeScreen = () => {
   return (
     <View style={styles.slide}>
-      <Text>Idozer</Text>
-      <Text>Teste idozer</Text>
-      <ThinText texto="Teste" />
-      <Text>
-        Lorem ipsum dolor sit amet, askdjkk consectetur adipiscing elit. Lorem
-        ipsum dolor sit amet, askdjkk
-      </Text>
+      <LightText texto="idozer" size={32} />
+      <Image source={require("../../assets/kit.png")} />
+      <View style={styles.textDiv}>
+        <BoldText texto="Teste idozer" size={40} color="#05B494" />
+        <RegularText
+          texto="Lorem ipsum dolor sit amet, askdjkk consectetur adipiscing elit. Lorem
+        ipsum dolor sit amet, askdjkkaaa"
+          size={13}
+        />
+      </View>
     </View>
   );
 };
@@ -19,18 +22,15 @@ const WelcomeScreen = () => {
 const styles = StyleSheet.create({
   slide: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#fff",
+    marginTop: 50,
+    marginBottom: 125,
   },
-  // text: {
-  //   fontSize: 24,
-  //   fontWeight: "bold",
-  //   textAlign: "center",
-  // },
-  poppinsThin: {
-    fontFamily: "Poppins-Thin",
-    fontSize: 20,
+  textDiv: {
+    width: 288,
+    height: 120,
+    marginTop: 40,
   },
 });
 

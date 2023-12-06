@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { BoldText, LightText, RegularText } from "../components/Text";
+import { Image } from "react-native";
 
 const LoginOrRegisterScreen = () => {
   const navigation = useNavigation();
@@ -15,15 +17,23 @@ const LoginOrRegisterScreen = () => {
 
   return (
     <View style={styles.slide}>
-      <Text>idozer</Text>
-      <Text>Teste idozer</Text>
-      <Text>Lorem ipsum dolor sit amet, askdjkk </Text>
+      <LightText texto="idozer" size={32} />
+      <Image source={require("../../assets/medicos.png")} />
+      <View style={styles.textDiv}>
+        <BoldText texto="Teste idozer" size={40} color="#05B494" />
+        <RegularText texto="Lorem ipsum dolor sit amet, askdjkk" size={13} />
+      </View>
+
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={navigateToRegister}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
+        <TouchableOpacity style={styles.buttonSignUp} onPress={navigateToLogin}>
+          <BoldText texto="SIGN UP" color="#05B494" size={16} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={navigateToLogin}>
-          <Text style={styles.buttonText}>Logar</Text>
+
+        <TouchableOpacity
+          style={styles.buttonRegister}
+          onPress={navigateToRegister}
+        >
+          <BoldText texto="REGISTER" color="#FFFFFF" size={16} />
         </TouchableOpacity>
       </View>
     </View>
@@ -33,22 +43,40 @@ const LoginOrRegisterScreen = () => {
 const styles = StyleSheet.create({
   slide: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#fff",
+    marginTop: 50,
+    marginBottom: 125,
+  },
+  textDiv: {
+    width: 300,
+    height: 80,
   },
   buttonContainer: {
     alignItems: "center",
-  },
-  button: {
+    width: 237,
+    height: 83,
     marginTop: 20,
-    padding: 10,
-    backgroundColor: "#3498db",
-    borderRadius: 5,
   },
-  buttonText: {
-    fontSize: 18,
-    color: "#fff",
+  buttonSignUp: {
+    marginTop: 20,
+    width: 237,
+    height: 36,
+    borderRadius: 100,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#D8FFF8",
+  },
+  buttonRegister: {
+    marginTop: 10,
+    width: 237,
+    height: 36,
+    borderRadius: 100,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#05B494",
   },
 });
 
