@@ -1,12 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { ThinText } from "../components/Text";
 
 const WelcomeScreen = () => {
   return (
     <View style={styles.slide}>
-      <Text style={styles.text}>Idozer</Text>
-      <Text style={styles.text}>Teste idozer</Text>
-      <Text style={styles.text}>
+      <Text>Idozer</Text>
+      <Text>Teste idozer</Text>
+      <ThinText texto="Teste" />
+      <Text>
         Lorem ipsum dolor sit amet, askdjkk consectetur adipiscing elit. Lorem
         ipsum dolor sit amet, askdjkk
       </Text>
@@ -21,10 +23,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
+  // text: {
+  //   fontSize: 24,
+  //   fontWeight: "bold",
+  //   textAlign: "center",
+  // },
+  poppinsThin: {
+    fontFamily: "Poppins-Thin",
+    fontSize: 20,
   },
 });
 

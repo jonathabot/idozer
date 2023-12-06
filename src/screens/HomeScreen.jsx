@@ -15,7 +15,7 @@ const HomeScreen = () => {
       );
       const data = await response.json();
 
-      console.log(data);
+      // console.log(data);
 
       const mappedData = data.map((post, index) => {
         const date = addDays(new Date(), index);
