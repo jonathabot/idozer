@@ -103,7 +103,8 @@ const HomeScreen = () => {
               <RegularText texto="Lembretes de Hoje" size={20} />
             </View>
             {JSON.map((item) => (
-              <View
+              <TouchableOpacity
+                onPress={navigateToEditReminder}
                 style={{
                   backgroundColor: "white",
                   padding: 10,
@@ -145,7 +146,7 @@ const HomeScreen = () => {
                 >
                   <Text>Hi</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
