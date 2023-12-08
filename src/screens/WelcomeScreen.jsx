@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { BoldText, LightText, RegularText, ThinText } from "../components/Text";
+import { StyleSheet, View, Image } from "react-native";
+import { BoldText, LightText, RegularText } from "../components/Text";
 
 const WelcomeScreen = () => {
   return (

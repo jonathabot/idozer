@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import StartScreen from "./screens/StartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import NewReminder from "./screens/NewReminder";
+import EditReminder from "./screens/EditReminder";
 
 const Stack = createStackNavigator();
 
@@ -16,8 +18,26 @@ const Navigation = () => {
           component={StartScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="NewReminder"
+          component={NewReminder}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditReminder"
+          component={EditReminder}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

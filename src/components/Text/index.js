@@ -70,3 +70,18 @@ export const BoldText = ({ texto, size, color }) => {
     </Text>
   );
 };
+
+export const BoldTextLink = ({ texto, size, color }) => {
+  return (
+    <Text
+      style={{
+        fontFamily: "bold",
+        fontSize: size ? size : 15,
+        color: color ? color : "black",
+        textDecorationLine: "underline",
+      }}
+    >
+      {texto}
+    </Text>
+  );
+};
