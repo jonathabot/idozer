@@ -17,11 +17,13 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const LoginScreen = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [terms, setTerms] = useState(false);
+  const [error, setError] = useState("");
 
   const navigation = useNavigation();
 
@@ -30,9 +32,21 @@ const LoginScreen = () => {
   };
 
   async function loginUser() {
-    console.log(username);
-    console.log(email);
-    console.log(password);
+    setError(""); // Limpar o erro anterior, se houver
+
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const user = userCredential.user;
+      navigation.navigate("Home");
+    } catch (error) {
+      setError(error.message);
+    }
   }
 
   return (
@@ -46,12 +60,12 @@ const LoginScreen = () => {
           </View>
 
           <View style={styles.formElement}>
-            <LightText texto="Username" size={13} />
+            <LightText texto="Email" size={13} />
             <TextInput
               style={styles.input}
-              value={username}
-              placeholder="Your user"
-              onChangeText={(text) => setUsername(text)}
+              value={email}
+              placeholder="Your email"
+              onChangeText={(text) => setEmail(text)}
               autoCapitalize={"none"}
             />
           </View>
@@ -95,6 +109,8 @@ const LoginScreen = () => {
               <BoldText texto="Forgot Password?" color="#05B494" />
             </TouchableOpacity>
           </View>
+
+          {error ? <Text style={styles.error}>{error}</Text> : null}
 
           <TouchableOpacity style={styles.buttonRegister} onPress={loginUser}>
             <RegularText texto="Sign In" color="#FFFFFF" size={16} />
@@ -149,6 +165,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#05B494",
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
   },
 });
 
