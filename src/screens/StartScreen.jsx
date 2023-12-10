@@ -16,7 +16,7 @@ export default function StartScreen() {
     >
       <WelcomeScreen />
       <LoginOrRegisterScreen />
-      <HomeScreen />
+      {/* <HomeScreen /> */}
     </Swiper>
   );
 }
