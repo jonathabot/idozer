@@ -7,31 +7,26 @@ import {
   RegularText,
 } from "../components/Text";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { RadioButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { FAB } from "react-native-elements";
+import { Image } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
-const JSON = [
-  {
-    id: 1,
-    iconStatus: "relogio",
-    titulo: "Amoxicilina 250mg",
-    descricao: "Tomar 2 vezes ao dia",
-    iconAction: "legal123",
-  },
-  {
-    id: 2,
-    iconStatus: "done",
-    titulo: "Amoxicilina 250mg",
-    descricao: "Tomar 2 vezes ao dia não se esquecer OKOKOKOKOKOKOKOK",
-    iconAction: "pilula",
-  },
+const statusIcons = [
+  { nome: "done", icon: require("../../assets/done.png") },
+  { nome: "relogio", icon: require("../../assets/relogio.png") },
+];
+
+const icons = [
+  { nome: "Comprimido", icon: require("../../assets/comprimido.png") },
+  { nome: "Cápsula", icon: require("../../assets/capsulas.png") },
 ];
 
 const HomeScreen = () => {
   const daysOfWeek = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
   const dataDeHoje = new Date();
   const diaDeHoje = daysOfWeek[dataDeHoje.getDay()];
+  const [lembretes, setLembretes] = useState([]);
 
   const [selectedItem, setSelectItem] = useState(diaDeHoje);
 
@@ -44,6 +39,36 @@ const HomeScreen = () => {
   const navigateToEditReminder = () => {
     navigation.navigate("EditReminder");
   };
+
+  const getIconByName = (nome) => {
+    const foundIcon = icons.find((item) => item.nome === nome);
+    return foundIcon ? foundIcon.icon : null;
+  };
+
+  const getStatusIconByName = (nome) => {
+    const foundIcon = statusIcons.find((item) => item.nome === nome);
+    return foundIcon ? foundIcon.icon : null;
+  };
+
+  async function getLembretes() {
+    try {
+      const data = await AsyncStorage.getItem("lembretes");
+      if (data !== null) {
+        // We have data!!
+        console.log(data);
+        setLembretes(JSON.parse(data));
+      }
+    } catch (error) {
+      console.log(error);
+      // Error saving data
+    }
+  }
+
+  useEffect(() => {
+    console.log("carregando...");
+    getLembretes();
+    console.log("carregou...");
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -102,52 +127,56 @@ const HomeScreen = () => {
             >
               <RegularText texto="Lembretes de Hoje" size={20} />
             </View>
-            {JSON.map((item) => (
-              <TouchableOpacity
-                onPress={navigateToEditReminder}
-                style={{
-                  backgroundColor: "white",
-                  padding: 10,
-                  marginBottom: 20,
-                  justifyContent: "center",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderRadius: 5,
-                }}
-                key={item.id}
-              >
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: 50,
-                  }}
-                >
-                  <Text> Hi</Text>
-                </View>
+            {lembretes ? (
+              <View>
+                {lembretes.map((item) => (
+                  <TouchableOpacity
+                    onPress={navigateToEditReminder}
+                    style={{
+                      backgroundColor: "white",
+                      padding: 10,
+                      marginBottom: 20,
+                      justifyContent: "center",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      borderRadius: 5,
+                    }}
+                    key={item.id}
+                  >
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: 50,
+                      }}
+                    >
+                      <Image source={getStatusIconByName(item.iconStatus)} />
+                    </View>
 
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "flex-start",
-                    width: 230,
-                  }}
-                >
-                  <BoldText texto={item.titulo} size={16} />
-                  <RegularText texto={item.descricao} />
-                </View>
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "flex-start",
+                        width: 230,
+                      }}
+                    >
+                      <BoldText texto={item.titulo} size={16} />
+                      <RegularText texto={item.dosagem} />
+                    </View>
 
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: 50,
-                  }}
-                >
-                  <Text>Hi</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: 50,
+                      }}
+                    >
+                      <Image source={getIconByName(item.iconAction)} />
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            ) : null}
           </View>
         </View>
       </View>
@@ -188,77 +217,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-
-// import { addDays, format } from "date-fns";
-// import React, { useEffect, useState } from "react";
-// import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-// import { Agenda } from "react-native-calendars";
-
-// const HomeScreen = () => {
-//   const [items, setItems] = useState({});
-
-//   useEffect(() => {
-//     // run once
-
-//     const getData = async () => {
-//       const response = await fetch(
-//         "https://jsonplaceholder.typicode.com/posts"
-//       );
-//       const data = await response.json();
-
-//       // console.log(data);
-
-//       const mappedData = data.map((post, index) => {
-//         const date = addDays(new Date(), index);
-
-//         return {
-//           ...post,
-//           date: format(date, "yyyy-MM-dd"),
-//         };
-//       });
-
-//       const reduced = mappedData.reduce((acc, currentItem) => {
-//         const { date, ...coolItem } = currentItem;
-
-//         acc[date] = [coolItem];
-
-//         return acc;
-//       }, {});
-
-//       setItems(reduced);
-//     };
-
-//     getData();
-//   }, []);
-
-//   const renderItem = (item) => {
-//     return (
-//       <View style={styles.itemContainer}>
-//         <Text>{item.name}</Text>
-//         <Text>{item.cookies ? `🍪` : `😋`}</Text>
-//       </View>
-//     );
-//   };
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <Agenda items={items} renderItem={renderItem} />
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   safe: {
-//     flex: 1,
-//   },
-//   itemContainer: {
-//     backgroundColor: "white",
-//     margin: 5,
-//     borderRadius: 15,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     flex: 1,
-//   },
-// });
-
-// export default HomeScreen;

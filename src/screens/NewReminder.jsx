@@ -1,20 +1,52 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, Button } from "react-native";
-import {
-  BoldText,
-  LightText,
-  MediumText,
-  RegularText,
-  ThinText,
-} from "../components/Text";
+import { StyleSheet, View, TextInput } from "react-native";
+import { BoldText, LightText, RegularText } from "../components/Text";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { RadioButton } from "react-native-paper";
 import SelectDropdown from "react-native-select-dropdown";
 import { Icon } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import uuid from "react-native-uuid";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const tiposMedicamentos = ["Comprimido", "Cápsula"];
+const diasDaSemana = [
+  {
+    id: 1,
+    dia: "Domingo",
+    short: "dom",
+  },
+  {
+    id: 2,
+    dia: "Segunda-feira",
+    short: "seg",
+  },
+  {
+    id: 3,
+    dia: "Terça-feira",
+    short: "ter",
+  },
+  {
+    id: 4,
+    dia: "Quarta-feira",
+    short: "qua",
+  },
+  {
+    id: 5,
+    dia: "Quinta-feira",
+    short: "qui",
+  },
+  {
+    id: 6,
+    dia: "Sexta-feira",
+    short: "sexta",
+  },
+  {
+    id: 7,
+    dia: "Sábado",
+    short: "sab",
+  },
+];
 
 const NewReminder = () => {
   const [nomeRemedio, setNomeRemedio] = useState("");
@@ -27,6 +59,44 @@ const NewReminder = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
 
+  const navigation = useNavigation();
+
+  async function createReminder() {
+    const newReminder = {
+      id: uuid.v4(),
+      iconStatus: "relogio",
+      titulo: nomeRemedio,
+      dosagem: dosagem,
+      horario: horario,
+      dia: dia,
+      iconAction: tipoRemedio,
+    };
+
+    const getReminder = await AsyncStorage.getItem("lembretes");
+    if (getReminder == null) {
+      await AsyncStorage.setItem("lembretes", JSON.stringify([newReminder]));
+    }
+    if (getReminder != null) {
+      const lembretesJson = JSON.parse(getReminder);
+      lembretesJson.push(newReminder);
+      await AsyncStorage.removeItem("lembretes");
+      await AsyncStorage.setItem("lembretes", JSON.stringify(lembretesJson));
+    }
+    console.log("Novo lembrete adicionado!");
+    resetPage();
+    navigation.navigate("Home");
+  }
+
+  function resetPage() {
+    setNomeRemedio("");
+    setTipoRemedio(null);
+    setDosagem("");
+    setHorario("");
+    setDia("");
+
+    setSelectedTime("");
+  }
+
   const showDatePicker = () => {
     setDatePickerVisible(true);
   };
@@ -37,11 +107,12 @@ const NewReminder = () => {
 
   const handleConfirm = (time) => {
     const hours = String(time.getHours());
-    const minutes = String(time.getHours());
+    const minutes = String(time.getMinutes());
 
     const horas = hours.length < 2 ? `0${hours}` : hours;
     const minutos = minutes.length < 2 ? `0${minutes}` : minutes;
     setSelectedTime(`${horas}:${minutos}`);
+    setHorario(`${horas}:${minutos}`);
     hideDatePicker();
   };
 
@@ -85,8 +156,8 @@ const NewReminder = () => {
             <RegularText texto="Tipo de Medicamento*" size={14} />
             <SelectDropdown
               data={tiposMedicamentos}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
+              onSelect={(selectedItem) => {
+                setTipoRemedio(selectedItem);
               }}
               defaultButtonText={
                 <LightText texto="Selecione o tipo" size={13} />
@@ -125,9 +196,9 @@ const NewReminder = () => {
             <RegularText texto="Dosagem (ex: 100mg)*" size={14} />
             <TextInput
               style={styles.input}
-              value={tipoRemedio}
+              value={dosagem}
               placeholder="200mg"
-              onChangeText={(text) => setTipoRemedio(text)}
+              onChangeText={(text) => setDosagem(text)}
               autoCapitalize={"none"}
             />
           </View>
@@ -162,18 +233,47 @@ const NewReminder = () => {
 
           <View style={styles.formElement}>
             <RegularText texto="Dia do lembrete*" size={14} />
-            <TextInput
-              style={styles.input}
-              value={dia}
-              placeholder="Domingo"
-              onChangeText={(text) => setDia(text)}
-              autoCapitalize={"none"}
+            <SelectDropdown
+              data={diasDaSemana}
+              onSelect={(selectedItem, index) => {
+                setDia(selectedItem.short);
+              }}
+              defaultButtonText={
+                <LightText texto="Selecione o tipo" size={13} />
+              }
+              buttonStyle={styles.dropdown1BtnStyle}
+              buttonTextStyle={styles.btnTextStyle}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem.dia;
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item.dia;
+              }}
+              renderDropdownIcon={(isOpened) => {
+                return (
+                  <LightText
+                    texto={
+                      isOpened ? (
+                        <Icon name="chevron-up-outline" type="ionicon" />
+                      ) : (
+                        <Icon name="chevron-down-outline" type="ionicon" />
+                      )
+                    }
+                  />
+                );
+              }}
+              dropdownIconPosition={"right"}
+              dropdownStyle={styles.dropdownStyle}
             />
           </View>
 
           <TouchableOpacity
             style={styles.buttonRegister}
-            // onPress={}
+            onPress={createReminder}
           >
             <BoldText texto="SALVAR LEMBRETE" color="#FFFFFF" size={16} />
           </TouchableOpacity>
