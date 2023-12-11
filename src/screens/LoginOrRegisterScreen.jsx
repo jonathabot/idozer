@@ -18,10 +18,9 @@ const LoginOrRegisterScreen = () => {
   return (
     <View style={styles.slide}>
       <LightText texto="idozer" size={32} />
-      <Image source={require("../../assets/medicos.png")} />
+      <Image style={styles.image} source={require("../../assets/medicos.png")} resizeMode="contain"/>
       <View style={styles.textDiv}>
-        <BoldText texto="Teste idozer" size={40} color="#05B494" />
-        <RegularText texto="Lorem ipsum dolor sit amet, askdjkk" size={13} />
+        <BoldText texto="Entre ou Cadastre-se" size={40} color="#05B494" />
       </View>
 
       <View style={styles.buttonContainer}>
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
   },
   textDiv: {
     width: 300,
-    height: 80,
+    height: "auto",
   },
   buttonContainer: {
     alignItems: "center",
@@ -78,6 +77,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#05B494",
   },
+  image: {
+    flex: 1
+  }
 });
 
 export default LoginOrRegisterScreen;
