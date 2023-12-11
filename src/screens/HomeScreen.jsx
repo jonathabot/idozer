@@ -82,7 +82,6 @@ const HomeScreen = () => {
 
   async function resetReminders() {
     await AsyncStorage.removeItem("lembretes");
-    console.log("Lembretes apagados.");
   }
 
   async function deslogarUser() {
@@ -98,7 +97,8 @@ const HomeScreen = () => {
   }, [isFocused]);
 
   useEffect(() => {
-    filtrarLembretes(diaDeHoje);
+    console.log(selectedItem);
+    filtrarLembretes(selectedItem);
     setLoading(false);
   }, [lembretes]);
 
@@ -131,12 +131,12 @@ const HomeScreen = () => {
                 buttonTextAfterSelection={(selectedItem, index) => {
                   // text represented after item is selected
                   // if data array is an array of objects then return selectedItem.property to render after item is selected
-                  return selectedItem.nome;
+                  return <LightText texto={selectedItem.nome} />;
                 }}
                 rowTextForSelection={(item, index) => {
                   // text represented for each item in dropdown
                   // if data array is an array of objects then return item.property to represent item in dropdown
-                  return item.nome;
+                  return <LightText texto={item.nome} />;
                 }}
                 renderDropdownIcon={(isOpened) => {
                   return (
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   },
   dropdownStyle: {
     borderRadius: 15,
-    width: 200,
+    width: 100,
   },
 });
 

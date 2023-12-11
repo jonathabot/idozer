@@ -167,12 +167,12 @@ const NewReminder = () => {
               buttonTextAfterSelection={(selectedItem, index) => {
                 // text represented after item is selected
                 // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem;
+                return <LightText texto={selectedItem} />;
               }}
               rowTextForSelection={(item, index) => {
                 // text represented for each item in dropdown
                 // if data array is an array of objects then return item.property to represent item in dropdown
-                return item;
+                return <LightText texto={item} />;
               }}
               renderDropdownIcon={(isOpened) => {
                 return (
@@ -239,19 +239,19 @@ const NewReminder = () => {
                 setDia(selectedItem.short);
               }}
               defaultButtonText={
-                <LightText texto="Selecione o tipo" size={13} />
+                <LightText texto="Selecione o dia" size={13} />
               }
               buttonStyle={styles.dropdown1BtnStyle}
               buttonTextStyle={styles.btnTextStyle}
               buttonTextAfterSelection={(selectedItem, index) => {
                 // text represented after item is selected
                 // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem.dia;
+                return <LightText texto={selectedItem.dia} />;
               }}
               rowTextForSelection={(item, index) => {
                 // text represented for each item in dropdown
                 // if data array is an array of objects then return item.property to represent item in dropdown
-                return item.dia;
+                return <LightText texto={item.dia} />;
               }}
               renderDropdownIcon={(isOpened) => {
                 return (
