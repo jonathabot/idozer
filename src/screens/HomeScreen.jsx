@@ -44,8 +44,11 @@ const HomeScreen = () => {
     navigation.navigate("NewReminder");
   };
 
-  const navigateToEditReminder = () => {
-    navigation.navigate("EditReminder");
+  const navigateToEditReminder = (item) => {
+    navigation.navigate("EditReminder", {
+      item: item,
+      reminders: lembretes,
+    });
   };
 
   const getIconByName = (nome) => {
@@ -217,7 +220,7 @@ const HomeScreen = () => {
                   <View>
                     {lembretesFiltrados.map((item) => (
                       <TouchableOpacity
-                        onPress={navigateToEditReminder}
+                        onPress={() => navigateToEditReminder(item)}
                         style={{
                           backgroundColor: "white",
                           padding: 10,
@@ -236,6 +239,7 @@ const HomeScreen = () => {
                             width: 50,
                           }}
                         >
+                          <RegularText texto={item.horario} />
                           <Image
                             source={getStatusIconByName(item.iconStatus)}
                           />

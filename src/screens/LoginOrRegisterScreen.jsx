@@ -18,14 +18,18 @@ const LoginOrRegisterScreen = () => {
   return (
     <View style={styles.slide}>
       <LightText texto="idozer" size={32} />
-      <Image style={styles.image} source={require("../../assets/medicos.png")} resizeMode="contain"/>
+      <Image
+        style={styles.image}
+        source={require("../../assets/medicos.png")}
+        resizeMode="contain"
+      />
       <View style={styles.textDiv}>
         <BoldText texto="Entre ou Cadastre-se" size={40} color="#05B494" />
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.buttonSignUp} onPress={navigateToLogin}>
-          <BoldText texto="SIGN UP" color="#05B494" size={16} />
+          <BoldText texto="SIGN IN" color="#05B494" size={16} />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -78,8 +82,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#05B494",
   },
   image: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default LoginOrRegisterScreen;

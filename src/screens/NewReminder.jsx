@@ -39,7 +39,7 @@ const diasDaSemana = [
   {
     id: 6,
     dia: "Sexta-feira",
-    short: "sexta",
+    short: "sex",
   },
   {
     id: 7,
