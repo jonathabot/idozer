@@ -6,12 +6,11 @@ const WelcomeScreen = () => {
   return (
     <View style={styles.slide}>
       <LightText texto="idozer" size={32} />
-      <Image source={require("../../assets/kit.png")} />
+      <Image source={require("../../assets/kit.png")} style={styles.image} resizeMode="contain"/>
       <View style={styles.textDiv}>
-        <BoldText texto="Teste idozer" size={40} color="#05B494" />
+        <BoldText texto="Bem vindo!" size={40} color="#05B494" />
         <RegularText
-          texto="Lorem ipsum dolor sit amet, askdjkk consectetur adipiscing elit. Lorem
-        ipsum dolor sit amet, askdjkkaaa"
+          texto="Seja muito bem-vindo ao nosso aplicativo! Estamos aqui para ajudá-lo a manter-se organizado e garantir que você tome seus medicamentos corretamente. "
           size={13}
         />
       </View>
@@ -29,9 +28,11 @@ const styles = StyleSheet.create({
   },
   textDiv: {
     width: 288,
-    height: 120,
-    marginTop: 40,
+    height: "auto",
   },
+  image: {
+    flex: 1
+  }
 });
 
 export default WelcomeScreen;
