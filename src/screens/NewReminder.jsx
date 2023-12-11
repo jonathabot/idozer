@@ -1,15 +1,50 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TextInput, Button } from "react-native";
 import {
   BoldText,
   LightText,
   MediumText,
   RegularText,
+  ThinText,
 } from "../components/Text";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { RadioButton } from "react-native-paper";
+import SelectDropdown from "react-native-select-dropdown";
+import { Icon } from "react-native-elements";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+const tiposMedicamentos = ["Comprimido", "Cápsula"];
 
 const NewReminder = () => {
+  const [nomeRemedio, setNomeRemedio] = useState("");
+  const [tipoRemedio, setTipoRemedio] = useState(null);
+  const [dosagem, setDosagem] = useState("");
+  const [horario, setHorario] = useState("");
+  const [dia, setDia] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisible(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisible(false);
+  };
+
+  const handleConfirm = (time) => {
+    const hours = String(time.getHours());
+    const minutes = String(time.getHours());
+
+    const horas = hours.length < 2 ? `0${hours}` : hours;
+    const minutos = minutes.length < 2 ? `0${minutes}` : minutes;
+    setSelectedTime(`${horas}:${minutos}`);
+    hideDatePicker();
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
@@ -35,90 +70,113 @@ const NewReminder = () => {
         </View>
 
         <View style={styles.form}>
-          <View style={{ marginTop: 20, marginBottom: 20 }}>
-            <BoldText texto="Create Account" color="#05B494" size={20} />
-          </View>
-
           <View style={styles.formElement}>
-            <LightText texto="Username" size={13} />
+            <RegularText texto="Nome (ex: Sertralina)*" size={14} />
             <TextInput
               style={styles.input}
-              value={username}
-              placeholder="Your user"
-              onChangeText={(text) => setUsername(text)}
+              value={nomeRemedio}
+              placeholder="Ibuprofeno"
+              onChangeText={(text) => setNomeRemedio(text)}
               autoCapitalize={"none"}
             />
           </View>
 
           <View style={styles.formElement}>
-            <LightText texto="Email" size={13} />
+            <RegularText texto="Tipo de Medicamento*" size={14} />
+            <SelectDropdown
+              data={tiposMedicamentos}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              defaultButtonText={
+                <LightText texto="Selecione o tipo" size={13} />
+              }
+              buttonStyle={styles.dropdown1BtnStyle}
+              buttonTextStyle={styles.btnTextStyle}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item;
+              }}
+              renderDropdownIcon={(isOpened) => {
+                return (
+                  <LightText
+                    texto={
+                      isOpened ? (
+                        <Icon name="chevron-up-outline" type="ionicon" />
+                      ) : (
+                        <Icon name="chevron-down-outline" type="ionicon" />
+                      )
+                    }
+                  />
+                );
+              }}
+              dropdownIconPosition={"right"}
+              dropdownStyle={styles.dropdownStyle}
+            />
+          </View>
+
+          <View style={styles.formElement}>
+            <RegularText texto="Dosagem (ex: 100mg)*" size={14} />
             <TextInput
               style={styles.input}
-              value={email}
-              placeholder={"Your email"}
-              onChangeText={(text) => setEmail(text)}
+              value={tipoRemedio}
+              placeholder="200mg"
+              onChangeText={(text) => setTipoRemedio(text)}
               autoCapitalize={"none"}
             />
           </View>
 
           <View style={styles.formElement}>
-            <LightText texto="Password" size={13} />
-            <TextInput
-              style={styles.input}
-              value={password}
-              placeholder={"************"}
-              secureTextEntry
-              onChangeText={(text) => setPassword(text)}
-            />
-          </View>
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: 10,
-              marginBottom: 10,
-              marginLeft: -10,
-            }}
-          >
-            <TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
+            <RegularText texto="Horário do lembrete*" size={14} />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={showDatePicker}
+                style={styles.floatingButtonStyle}
               >
-                <RadioButton
-                  value="Apple"
-                  status={terms ? "checked" : "unchecked"} //if the value of checked is Apple, then select this button
-                  onPress={() => setTerms(terms ? false : true)} //when pressed, set the value of the checked Hook to 'Apple'
-                  color="#05B494"
+                <BoldText
+                  texto={
+                    selectedTime ? (
+                      <BoldText texto={selectedTime} color="white" />
+                    ) : (
+                      <BoldText texto="+" color="white" size={40} />
+                    )
+                  }
                 />
-                <LightText texto="I accept the terms" />
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            <DateTimePickerModal
+              date={selectedDate}
+              isVisible={datePickerVisible}
+              mode={"time"}
+              is24Hour={true}
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+          </View>
+
+          <View style={styles.formElement}>
+            <RegularText texto="Dia do lembrete*" size={14} />
+            <TextInput
+              style={styles.input}
+              value={dia}
+              placeholder="Domingo"
+              onChangeText={(text) => setDia(text)}
+              autoCapitalize={"none"}
+            />
           </View>
 
           <TouchableOpacity
             style={styles.buttonRegister}
-            onPress={registerUser}
+            // onPress={}
           >
-            <RegularText texto="Sign Up" color="#FFFFFF" size={16} />
+            <BoldText texto="SALVAR LEMBRETE" color="#FFFFFF" size={16} />
           </TouchableOpacity>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              textAlign: "center",
-              marginTop: 20,
-            }}
-          >
-            <LightText texto="Already have an account?" />
-            <TouchableOpacity onPress={navigateToLogin}>
-              <BoldTextLink texto=" Log in" color="#05B494" />
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </View>
@@ -135,27 +193,61 @@ const styles = StyleSheet.create({
     width: "85%",
   },
   form: {
-    width: 285,
+    width: "100%",
+    marginTop: 20,
   },
   input: {
     fontFamily: "light",
     borderColor: "gray",
     borderWidth: 1,
+    marginTop: 5,
     marginBottom: 15,
     paddingLeft: 10,
-    width: 285,
-    height: 35,
+    width: "100",
+    height: 40,
     borderRadius: 4,
+    backgroundColor: "white",
   },
   buttonRegister: {
     marginTop: 10,
-    width: 285,
-    height: 36,
+    width: "100",
+    height: 40,
     borderRadius: 4,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#05B494",
+  },
+  dropdown1BtnStyle: {
+    borderColor: "gray",
+    borderWidth: 1,
+    marginTop: 5,
+    marginBottom: 15,
+    width: "100",
+    height: 40,
+    borderRadius: 4,
+    backgroundColor: "white",
+  },
+  btnTextStyle: {
+    fontFamily: "light",
+    fontSize: 14,
+    color: "black",
+    textAlign: "left",
+    marginLeft: 2,
+  },
+  dropdownStyle: {
+    borderRadius: 15,
+  },
+  floatingButtonStyle: {
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+    backgroundColor: "#05B494",
+    width: 60,
+    height: 60,
+    marginTop: 5,
+    borderRadius: 100,
+    marginBottom: 15,
   },
 });
 
