@@ -8,6 +8,8 @@ import { Icon } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import uuid from "react-native-uuid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createAlarm } from 'react-native-simple-alarm';
+import moment from 'moment'
 
 const tiposMedicamentos = ["Comprimido", "Cápsula"];
 const diasDaSemana = [
@@ -61,6 +63,19 @@ const NewReminder = () => {
 
   const navigation = useNavigation();
 
+  createNewAlarm = async () => {
+    try {
+      await createAlarm({
+          active: false,
+          date: moment().format(),
+          message: 'message',
+          snooze: 1,
+        });
+    } catch (e) {
+      console.log(e)
+    }
+   }
+
   async function createReminder() {
     const newReminder = {
       id: uuid.v4(),
@@ -77,6 +92,7 @@ const NewReminder = () => {
       await AsyncStorage.setItem("lembretes", JSON.stringify([newReminder]));
     }
     if (getReminder != null) {
+      createNewAlarm();
       const lembretesJson = JSON.parse(getReminder);
       lembretesJson.push(newReminder);
       await AsyncStorage.removeItem("lembretes");
