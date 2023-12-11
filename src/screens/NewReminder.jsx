@@ -317,6 +317,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#05B494",
+    marginBottom: 20,
   },
   dropdown1BtnStyle: {
     borderColor: "gray",
