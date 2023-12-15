@@ -10,6 +10,6 @@ Este projeto foi desenvolvido como avaliação final da disciplina de Desenvolvi
 | :----------------------------------------------------------: | :----------------------------------------------------------------: | :------------------------------------------------------: | :-------------------------------------------------------: |
 | <img src="./assets/screenshots/startpage.png" width="200" /> | <img src="./assets/screenshots/loginorregister.png" width="200" /> | <img src="./assets/screenshots/login.png" width="200" /> | <img src="./assets/screenshots/signup.png" width="200" /> |
 
-|                        Home Screen                        |                     Add New Reminder                      |
-| :-------------------------------------------------------: | :-------------------------------------------------------: |
-| <img src="./assets/screenshots/Home-3.png" width="200" /> | <img src="./assets/screenshots/Home-4.png" width="200" /> |
+|                       Home Screen                       |                        Add New Reminder                        |
+| :-----------------------------------------------------: | :------------------------------------------------------------: |
+| <img src="./assets/screenshots/home.png" width="200" /> | <img src="./assets/screenshots/addreminder.png" width="200" /> |
